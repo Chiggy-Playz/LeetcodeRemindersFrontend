@@ -85,12 +85,12 @@ class _HomeWidgetState extends State<HomeWidget> {
                       final task = TaskCreate(
                         title: "Problem $parsed",
                         description: "",
-                        dueDate: DateTime.now().toUtc().add(
+                        dueDate: DateTime.now().add(
                               const Duration(days: 1),
-                            ),
+                            ).toUtc(),
                       );
                       await taskClient.createTask(task);
-
+                      key.currentState!.reset();
                       // Refetch tasks after creating a new one.
                       setState(() {});
                     },
