@@ -2,6 +2,26 @@ import 'package:dart_mappable/dart_mappable.dart';
 
 part 'models.mapper.dart';
 
+class DateTimeHook extends MappingHook {
+  const DateTimeHook();
+
+  @override
+  Object? afterDecode(Object? value) {
+    if (value is DateTime) {
+      return value.copyWith(isUtc: true).toLocal();
+    }
+    return super.afterDecode(value);
+  }
+
+  @override
+  Object? beforeEncode(Object? value) {
+    if (value is DateTime) {
+      return value. toUtc();
+    }
+    return super.beforeEncode(value);
+  }
+}
+
 @MappableEnum()
 enum TaskStatus {
   pending,
@@ -12,6 +32,7 @@ enum TaskStatus {
 class TaskCreate with TaskCreateMappable {
   final String title;
   final String? description;
+  @MappableField(hook: DateTimeHook())
   final DateTime dueDate;
 
   const TaskCreate(
@@ -25,6 +46,7 @@ class Task with TaskMappable {
   final int id;
   final String title;
   final String? description;
+  @MappableField(hook: DateTimeHook())
   final DateTime dueDate;
   final TaskStatus status;
   final int repeatInterval;
