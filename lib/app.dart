@@ -114,7 +114,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   .copyWith(hour: 23, minute: 59, second: 59, microsecond: 0);
 
               final tasks = snapshot.data!.where((task) {
-                return task.dueDate.isBefore(now);
+                return task.dueDate.toLocal().isBefore(now);
               }).toList();
 
               if (tasks.isEmpty) {
